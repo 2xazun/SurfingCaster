@@ -1,0 +1,17 @@
+# OS
+.DS_Store
+Thumbs.db
+
+# 에디터
+.vscode/
+.idea/
+
+# API 키/환경변수 (절대 커밋 금지)
+config.js
+.env
+
+# Node
+node_modules/
+
+# 로그
+*.log
