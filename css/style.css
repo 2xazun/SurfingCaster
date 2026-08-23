@@ -6,6 +6,7 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  font-family: "Poppins";
 }
 
 .main-container {
@@ -35,7 +36,7 @@
   justify-content: center;
   width: 100%;
   align-items: center;
-  margin-top: 50px;
+  margin-top: 40px;
 }
 
 .informations {
@@ -136,4 +137,9 @@ ul {
   100% {
     transform: translateX(0);
   }
+}
+
+.detail {
+  height: 35px;
+  margin-top: 20px;
 }
