@@ -27,10 +27,18 @@
 
 #information-container {
   display: flex;
+  flex-direction: column;
   justify-content: center;
   width: 100%;
   align-items: center;
   margin-top: 50px;
+}
+
+#informations {
+  width: 250px;
+  display: flex;
+  flex-direction: column;
+  align-items: start;
 }
 
 #map-container {
@@ -39,6 +47,7 @@
 }
 
 #search {
+  display: block;
   width: 300px;
   height: 40px;
   padding-left: 10px;
@@ -52,4 +61,22 @@
   height: 40px;
   width: 206px;
   margin: 20px 20px 0px 20px;
+}
+
+#highlighting {
+  margin-top: 30px;
+  width: 100px;
+  height: 35px;
+}
+
+ul {
+  list-style-position: inside;
+}
+
+.delete {
+  background-color: #ff0000;
+  color: #ffffff;
+  border-radius: 10px;
+  border: none;
+  padding: 2px;
 }
