@@ -4,20 +4,20 @@
   box-sizing: border-box;
 }
 
-#main-container {
+.main-container {
   display: flex;
   height: 100vh;
   width: 100%;
 }
 
-#divider {
+.divider {
   width: 2px;
   background-color: rgba(0, 0, 0, 0.3);
   height: calc(100% - 160px);
   margin-top: 80px;
 }
 
-#left-panner {
+.left-panner {
   display: flex;
   width: calc(40% - 80px);
   flex-direction: column;
@@ -25,25 +25,25 @@
   margin: 0;
 }
 
-#information-container {
+.information-container {
   display: flex;
   justify-content: center;
   align-items: center;
   margin-top: 50px;
 }
 
-#map-container {
+.map-container {
   height: calc(100% - 60px);
   width: calc(60% - 310px);
 }
 
-#search {
+.search {
   display: inline-block;
   width: 300px;
   height: 50px;
 }
 
-#logo-image {
+.logo-image {
   display: inline-block;
   height: 40px;
   width: 206px;
