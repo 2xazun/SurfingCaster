@@ -1,7 +1,12 @@
+:root {
+  --wave-height: 100px;
+}
+
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  font-family: "Poppins";
 }
 
 .main-container {
@@ -27,25 +32,114 @@
 
 .information-container {
   display: flex;
+  flex-direction: column;
   justify-content: center;
+  width: 100%;
   align-items: center;
-  margin-top: 50px;
+  margin-top: 40px;
+}
+
+.informations {
+  width: 250px;
+  display: flex;
+  flex-direction: column;
+  align-items: start;
 }
 
 .map-container {
   height: calc(100% - 60px);
-  width: calc(60% - 310px);
+  width: 60%;
 }
 
 .search {
-  display: inline-block;
+  display: block;
   width: 300px;
-  height: 50px;
+  height: 40px;
+  padding-left: 10px;
+  border-radius: 10px;
+  border: none;
+  background-color: #f3f3f3;
 }
 
 .logo-image {
   display: inline-block;
   height: 40px;
   width: 206px;
-  margin: 20px;
+  margin: 20px 20px 0px 20px;
+}
+
+.highlighting {
+  margin-top: 30px;
+  height: 35px;
+}
+
+ul {
+  list-style-position: inside;
+}
+
+.delete {
+  background-color: #ff0000;
+  color: #ffffff;
+  border-radius: 10px;
+  border: none;
+  padding: 2px;
+}
+
+.live {
+  height: 35px;
+  margin-top: 20px;
+}
+
+.sea-situation {
+  position: relative;
+  margin-top: 10px;
+  display: flex;
+  justify-content: center;
+  width: 300px;
+  height: 200px;
+  background: linear-gradient(#eaf8ff, #76c7f2);
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.wave {
+  --wave-height: 100px;
+  width: 200%;
+  display: inline-block;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: var(--wave-height);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 120' preserveAspectRatio='none'%3E%3Cdefs%3E%3ClinearGradient id='wave-grad' x1='0' y1='0' x2='0' y2='1'%3E%3Cstop offset='0%25' stop-color='%2360a5fa' stop-opacity='0.2'/%3E%3Cstop offset='100%25' stop-color='%231d4ed8' stop-opacity='0.8'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath d='M0,10 C 0,0 0,60 600, 60 C 600, 60 600,0 1200,0 L1200,120 L0,120 Z' fill='url(%23wave-grad)' fill-opacity='0.4'%3E%3C/path%3E%3C/svg%3E");
+  background-size: 50% 100%;
+  background-repeat: repeat-x;
+  transform-origin: bottom center;
+  animation: wave-flow 2s linear infinite;
+}
+
+.wave-information {
+  padding: 7px;
+  position: absolute;
+  bottom: 20px;
+  background-color: rgba(255, 255, 255, 0.2);
+  border-radius: 20px;
+  border:
+    2px rgba(0, 0, 0, 0.3),
+    solid;
+  font-size: 10pt;
+  color: rgba(0, 0, 0, 0.6);
+}
+
+@keyframes wave-flow {
+  0% {
+    transform: translateX(-50%);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+.detail {
+  height: 35px;
+  margin-top: 20px;
 }
