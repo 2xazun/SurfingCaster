@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ko">
   <head>
     <meta charset="UTF-8" />
@@ -19,10 +19,7 @@
               class="search"
               placeholder="⌕  해변을 검색하세요..."
             />
-            <div class="search-list hidden">
-              <div class="search-results">⌕&nbsp;&nbsp;속초 해수욕장</div>
-              <div class="search-results">⌕&nbsp;&nbsp;제천 해수욕장</div>
-            </div>
+            <div class="search-list hidden"></div>
           </div>
 
           <div class="informations">
@@ -65,7 +62,7 @@
 
     <!-- 카카오 SDK 동적 로드 -->
     <script>
-      const script = document.createElement('script');
+      const script = document.createElement("script");
       script.src = `https://dapi.kakao.com/v2/maps/sdk.js?appkey=${CONFIG.KAKAO_MAP_KEY}&autoload=false`;
       document.head.appendChild(script);
     </script>
@@ -74,5 +71,6 @@
     <script src="js/stations.js"></script>
     <script src="js/api.js"></script>
     <script src="js/map.js"></script>
+    <script src="js/search.js"></script>
   </body>
 </html>

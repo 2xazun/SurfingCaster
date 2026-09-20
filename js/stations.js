@@ -5,7 +5,7 @@ const STATIONS = [
     lat: 37.9691,
     lng: 128.7601,
     beachCode: "1",
-    obsCode: "TW_0090"
+    obsCode: "TW_0090",
   },
   {
     id: "ST_002",
@@ -13,7 +13,7 @@ const STATIONS = [
     lat: 38.1906,
     lng: 128.6034,
     beachCode: "2",
-    obsCode: "TW_0091"
+    obsCode: "TW_0091",
   },
   {
     id: "ST_003",
@@ -21,6 +21,6 @@ const STATIONS = [
     lat: 35.1587,
     lng: 129.1604,
     beachCode: "3",
-    obsCode: "TW_0062"
-  }
+    obsCode: "TW_0062",
+  },
 ];
