@@ -1,8 +1,8 @@
 let map;
 
 function initMap() {
-  if(typeof kakao === "undefined" || !kakao.maps) {
-    setTimeout(initMap, 100)
+  if (typeof kakao === "undefined" || !kakao.maps) {
+    setTimeout(initMap, 100);
     return;
   }
 
@@ -10,7 +10,7 @@ function initMap() {
     const container = document.getElementById("map");
     const options = {
       center: new kakao.maps.LatLng(36.5, 127.8),
-      level: 13
+      level: 13,
     };
 
     map = new kakao.maps.Map(container, options);
@@ -24,11 +24,11 @@ function renderMarkers() {
 
     const marker = new kakao.maps.Marker({
       position: markerPosition,
-      map: map
+      map: map,
     });
 
     const infowindow = new kakao.maps.InfoWindow({
-      content: `<div style="padding:5px;font-size:12px;color:#333;">${station.name}</div>`
+      content: `<div style="padding:5px;font-size:12px;color:#333;">${station.name}</div>`,
     });
 
     kakao.maps.event.addListener(marker, "mouseover", function () {

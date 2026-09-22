@@ -21,12 +21,12 @@ async function fetchAllMarineData(beachCode, obsCode) {
   try {
     const [weatherRes, tideRes] = await Promise.all([
       fetchWeatherData(beachCode),
-      fetchTideData(obsCode)
+      fetchTideData(obsCode),
     ]);
 
     return {
       weather: weatherRes,
-      tide: tideRes
+      tide: tideRes,
     };
   } catch (error) {
     console.error("데이터 병렬 불러오기 실패:", error);
