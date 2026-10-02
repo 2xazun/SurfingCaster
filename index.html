@@ -29,7 +29,9 @@
               alt="즐겨찾기"
             />
             <ul>
-              <li>양양 죽도 해변 <button class="delete">삭제</button></li>
+              <li class="li">
+                양양 죽도 해변 <button class="delete">삭제</button>
+              </li>
               <li>속초 해수욕장 <button class="delete">삭제</button></li>
             </ul>
             <img
@@ -39,13 +41,21 @@
             />
             <div class="sea-situation">
               <div class="wave"></div>
-              <div class="wave-information">현재 파고: 1.8m (조금 높음!)</div>
+              <div class="wave-information">
+                현재 파고: <span class="wave-height"></span> m (<span
+                  class="wave-level"
+                ></span
+                >)
+              </div>
             </div>
             <img class="detail" src="assets/icons/detail.svg" alt="세부 정보" />
             <ul>
-              <li>실시간 수온 : 21°C</li>
-              <li>풍향/풍속 : 남서풍 5.2m/s</li>
-              <li>오늘 물때 : 만조 14:20</li>
+              <li>
+                실시간 수온 :
+                <span class="TMP"></span>℃
+              </li>
+              <li>풍향/풍속 : <span class="V"></span>m/s</li>
+              <li>오늘 물때 : <span class="Tide"></span></li>
             </ul>
           </div>
         </div>
@@ -72,5 +82,6 @@
     <script src="js/api.js"></script>
     <script src="js/map.js"></script>
     <script src="js/search.js"></script>
+    <script src="js/ui.js"></script>
   </body>
 </html>

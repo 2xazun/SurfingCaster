@@ -7,13 +7,14 @@ async function fetchWeatherData(beachCode) {
     String(date.getFullYear()) +
     String(date.getMonth() + 1).padStart(2, "0") +
     String(date.getDate()).padStart(2, "0");
-  const timeFormat = String(
-    (date.getHours() - 2) % 3 === 0
-      ? date.getHours()
-      : 2 + 3 * ((date.getHours() - 2) / 3),
-  )
-    .padStart(2, "0")
-    .padEnd(4, "0");
+  let hour = date.getHours();
+  let minute = date.getMinutes();
+  let hourFormat =
+    (hour - 2) % 3 === 0 ? hour : 2 + 3 * Math.floor((hour - 2) / 3);
+  if (hour === hourFormat && minute < 20) {
+    hourFormat -= 3;
+  }
+  const timeFormat = String(hourFormat).padStart(2, "0").padEnd(4, "0");
   console.log(timeFormat);
   console.log(dateFormat);
   const url = `https://apis.data.go.kr/1360000/BeachInfoservice/getVilageFcstBeach?serviceKey=${SERVICE_KEY}&dataType=JSON&beach_num=${beachCode}&base_time=${timeFormat}&base_date=${dateFormat}`;
