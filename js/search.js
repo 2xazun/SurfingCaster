@@ -1,6 +1,12 @@
 const search = document.querySelector(".search");
+let timer;
 search.addEventListener("input", () => {
-  searching();
+  if (timer) {
+    clearTimeout(timer);
+    timer = setTimeout(searching, 300);
+  } else {
+    timer = setTimeout(searching, 300);
+  }
 });
 
 function searching() {
