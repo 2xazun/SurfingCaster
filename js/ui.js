@@ -49,4 +49,29 @@ async function dataLoad() {
     waveLevelValue = "매우 높음!";
   }
   waveLevel.innerHTML = waveLevelValue;
+
+  // 4. 국립해양조사원 물때(조위) 데이터 불러와서 넣기
+  try {
+    const tideData = await fetchTideData("DT_0005");
+    const rawData =
+      tideData?.result?.data || tideData?.result?.data?.record || {};
+    const record = Array.isArray(rawData) ? rawData[0] : rawData;
+
+    const tideLevel =
+      record?.tide_level ||
+      record?.tide_lvl ||
+      record?.real_value ||
+      "정보없음";
+    const recordTime = record?.record_time || record?.obs_time || "";
+
+    if (Tide) {
+      Tide.innerHTML =
+        tideLevel !== "정보없음"
+          ? `${tideLevel} cm (${recordTime})`
+          : "정보없음";
+    }
+  } catch (tideErr) {
+    console.error("물때 데이터 로드 에러:", tideErr);
+    if (Tide) Tide.innerHTML = "불러오기 실패";
+  }
 }
