@@ -39,6 +39,7 @@ async function dataLoad() {
 
   //3. 파고 구해서 넣기
   const WEVValue = dataItems[8].fcstValue;
+  // const WEVValue = 0.5; // 테스트용 변수
   waveHeight.innerHTML = `${WEVValue}`;
   let waveLevelValue;
   if (WEVValue <= 0.5) {
@@ -49,4 +50,7 @@ async function dataLoad() {
     waveLevelValue = "매우 높음!";
   }
   waveLevel.innerHTML = waveLevelValue;
+
+  //5. 파도 에니메이션 불러오기 ㅎㅎ.....
+  updateWave(WEVValue);
 }
