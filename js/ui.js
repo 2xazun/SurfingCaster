@@ -2,12 +2,10 @@ const waveHeight = document.querySelector(".wave-height");
 const TMP = document.querySelector(".TMP");
 const V = document.querySelector(".V");
 const Tide = document.querySelector(".Tide");
-const Li = document.querySelector(".li");
 const waveLevel = document.querySelector(".wave-level");
 
-Li.addEventListener("click", dataLoad);
-async function dataLoad() {
-  const data = await fetchWeatherData(225);
+async function dataLoad(station) {
+  const data = await fetchWeatherData(station.beachCode);
   const dataItems = data.response.body.items.item;
   console.log(dataItems);
   //1. 수온 구해서 넣기
@@ -39,6 +37,7 @@ async function dataLoad() {
 
   //3. 파고 구해서 넣기
   const WEVValue = dataItems[8].fcstValue;
+  // const WEVValue = 0.5; // 테스트용 변수
   waveHeight.innerHTML = `${WEVValue}`;
   let waveLevelValue;
   if (WEVValue <= 0.5) {
@@ -52,7 +51,7 @@ async function dataLoad() {
 
   // 4. 국립해양조사원 물때(조위) 데이터 불러와서 넣기
   try {
-    const tideData = await fetchTideData("DT_0005");
+    const tideData = await fetchTideData(station.obsCode);
     const rawData =
       tideData?.result?.data || tideData?.result?.data?.record || {};
     const record = Array.isArray(rawData) ? rawData[0] : rawData;
@@ -74,4 +73,7 @@ async function dataLoad() {
     console.error("물때 데이터 로드 에러:", tideErr);
     if (Tide) Tide.innerHTML = "불러오기 실패";
   }
+
+  //5. 파도 에니메이션 불러오기 ㅎㅎ.....
+  updateWave(WEVValue);
 }

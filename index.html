@@ -29,9 +29,7 @@
               alt="즐겨찾기"
             />
             <ul>
-              <li class="li">
-                양양 죽도 해변 <button class="delete">삭제</button>
-              </li>
+              <li>양양 죽도 해변 <button class="delete">삭제</button></li>
               <li>속초 해수욕장 <button class="delete">삭제</button></li>
             </ul>
             <img
@@ -40,7 +38,12 @@
               alt="실시간 바다 상태"
             />
             <div class="sea-situation">
-              <div class="wave"></div>
+              <object
+                id="wave-bg"
+                type="image/svg+xml"
+                data="./assets/icons/wave.svg"
+                class="wave"
+              ></object>
               <div class="wave-information">
                 현재 파고: <span class="wave-height"></span> m (<span
                   class="wave-level"
@@ -83,5 +86,6 @@
     <script src="js/map.js"></script>
     <script src="js/search.js"></script>
     <script src="js/ui.js"></script>
+    <script src="js/theme.js"></script>
   </body>
 </html>

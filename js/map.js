@@ -38,6 +38,10 @@ function renderMarkers() {
     kakao.maps.event.addListener(marker, "mouseout", function () {
       infowindow.close();
     });
+
+    kakao.maps.event.addListener(marker, "click", function () {
+      dataLoad(station);
+    });
   });
 }
 
