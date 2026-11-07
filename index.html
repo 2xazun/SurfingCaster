@@ -93,5 +93,23 @@
     <script src="js/ui.js"></script>
     <script src="js/theme.js"></script>
     <script src="js/myPage.js"></script>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        // 저장된 장소 데이터 가져오기
+        const stationData = sessionStorage.getItem("selectedStation");
+
+        // 문자열을 객체로 변환
+        const findStation = JSON.parse(stationData);
+
+        // 장소 정보 출력
+        if (findStation) {
+          dataLoad(findStation);
+        }
+
+        // 사용한 데이터 삭제
+        sessionStorage.removeItem("selectedStation");
+      });
+    </script>
   </body>
 </html>
