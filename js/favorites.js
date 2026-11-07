@@ -33,19 +33,19 @@ function favorites() {
   console.log(highlightTag);
   highlightList.innerHTML = highlightTag.join("");
 
-  const highlightElement = document.querySelector(".highlight");
-  highlightElement.addEventListener("click", function (e) {
-    let name = e.target.innerText.trim();
-    name = name.replace("삭제", "").trim();
-    console.log(name);
-    const findStation = STATIONS.find((station) => (station.name = name));
+  const highlightElement = document.querySelectorAll(".highlight");
+  highlightElement.forEach((h) => {
+    h.addEventListener("click", function (e) {
+      let name = e.target.innerText.trim();
+      name = name.replace("삭제", "").trim();
+      console.log(name);
+      const findStation = STATIONS.find((station) => (station.name = name));
 
-    // 장소 데이터 저장
-    sessionStorage.setItem("selectedStation", JSON.stringify(findStation));
+      // 장소 데이터 저장
+      sessionStorage.setItem("selectedStation", JSON.stringify(findStation));
 
-    // 메인 페이지로 이동
-    location.href = "/index.html";
-
-    dataLoad(findStation);
+      // 메인 페이지로 이동
+      location.href = "/index.html";
+    });
   });
 }
