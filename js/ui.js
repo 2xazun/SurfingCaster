@@ -77,3 +77,18 @@ async function dataLoad(station) {
   //5. 파도 에니메이션 불러오기 ㅎㅎ.....
   updateWave(WEVValue);
 }
+
+function showToast(message) {
+  const toast = document.querySelector("#toast");
+  const toastMessage = document.querySelector(".toast-message");
+
+  toastMessage.textContent = message;
+
+  toast.classList.remove("opacity-0", "invisible", "translate-y-[-10px]");
+  toast.classList.add("opacity-100", "visible", "translate-y-0");
+
+  setTimeout(() => {
+    toast.classList.remove("opacity-100", "visible", "translate-y-0");
+    toast.classList.add("opacity-0", "invisible", "translate-y-[-10px]");
+  }, 3000);
+}

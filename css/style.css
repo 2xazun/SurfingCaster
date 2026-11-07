@@ -40,6 +40,10 @@ a {
   width: 30px;
 }
 
+.profile-image {
+  max-width: none;
+}
+
 .left-panner {
   display: flex;
   width: 40%;
@@ -56,6 +60,7 @@ a {
   height: 40px;
   width: 206px;
   margin-bottom: 10px;
+  max-width: none;
 }
 
 .information-container {

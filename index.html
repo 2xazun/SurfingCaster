@@ -6,8 +6,18 @@
     <title>SurfingCaster</title>
     <link rel="stylesheet" href="./css/style.css" />
     <link rel="stylesheet" href="./css/theme.css" />
+    <!-- 테일윈드 -->
+    <script src="https://cdn.tailwindcss.com"></script>
   </head>
   <body>
+    <!-- 페이지 첫 로딩 때만 사용하는 토스트바 -->
+    <div
+      id="toast"
+      class="fixed top-6 left-1/2 -translate-x-1/2 flex items-center gap-3 bg-gray-900 text-white px-5 py-3 rounded-xl shadow-lg opacity-0 invisible translate-y-[-10px] transition-all duration-300 z-[9999]"
+    >
+      <span class="text-blue-400">ⓘ</span>
+      <span class="toast-message text-sm"></span>
+    </div>
     <div class="main-container">
       <!-- 왼쪽 정보 사이드바 (40%) -->
       <div class="left-panner">
@@ -96,19 +106,51 @@
 
     <script>
       document.addEventListener("DOMContentLoaded", () => {
+        // 더미데이터
+        const stations = [
+          {
+            id: "ST_001",
+            name: "양양 죽도 해변",
+            lat: 37.9691,
+            lng: 128.7601,
+            beachCode: "1",
+            obsCode: "TW_0090",
+          },
+          {
+            id: "ST_002",
+            name: "속초 해수욕장",
+            lat: 38.1906,
+            lng: 128.6034,
+            beachCode: "2",
+            obsCode: "TW_0091",
+          },
+        ];
         // 저장된 장소 데이터 가져오기
         const stationData = sessionStorage.getItem("selectedStation");
 
-        // 문자열을 객체로 변환
-        const findStation = JSON.parse(stationData);
+        if (stationData) {
+          // 문자열을 객체로 변환
+          const findStation = JSON.parse(stationData);
 
-        // 장소 정보 출력
-        if (findStation) {
-          dataLoad(findStation);
+          // 장소 정보 출력
+          if (findStation) {
+            dataLoad(findStation);
+          }
+
+          // 사용한 데이터 삭제
+          sessionStorage.removeItem("selectedStation");
+        } else {
+          const findStation = stations[0];
+
+          // 장소 정보 출력
+          if (findStation) {
+            dataLoad(findStation);
+
+            showToast(
+              `첫 번째 즐겨찾기 장소인 ${findStation.name}의 정보를 보여드리고 있어요.`,
+            );
+          }
         }
-
-        // 사용한 데이터 삭제
-        sessionStorage.removeItem("selectedStation");
       });
     </script>
   </body>
