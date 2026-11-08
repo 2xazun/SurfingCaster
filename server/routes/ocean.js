@@ -1,47 +1,76 @@
+// 국립해양조사원 조석예보(고조/저조) API 프록시
+// 공공데이터포털: 해양수산부 국립해양조사원_조석예보(고, 저조) (15156018)
+//
+//  GET /api/ocean/tide/:obsCode   (obsCode 예: DT_0012 속초, DT_0005 부산)
+//  -> { stationName, events: [{ time: "2026-11-08 14:40", level: 667, type: "고조" }, ...] }
+//
+// 오늘 + 내일 예보를 같이 가져와서, 밤늦게 조회해도 "다음 만조/간조"를 보여줄 수 있게 함
 const express = require('express');
 const router = express.Router();
 const axios = require('axios');
 
+const TIDE_URL = 'https://apis.data.go.kr/1192136/tideFcstHghLw/GetTideFcstHghLwApiService';
+const TIDE_TYPE = { 1: '고조', 2: '저조', 3: '고조', 4: '저조' }; // 극치구분(1: 오전 고조, 2: 오전 저조, 3: 오후 고조, 4: 오후 저조)
+
+// 한국 시간 기준 yyyyMMdd (서버 시간대와 상관없이)
+function kstDateString(offsetDays = 0) {
+  const kst = new Date(Date.now() + 9 * 60 * 60 * 1000 + offsetDays * 24 * 60 * 60 * 1000);
+  return kst.toISOString().slice(0, 10).replace(/-/g, '');
+}
+
+async function fetchTideDay(obsCode, reqDate) {
+  const response = await axios.get(TIDE_URL, {
+    params: {
+      serviceKey: process.env.KHOA_SERVICE_KEY || process.env.PUBLIC_API_KEY,
+      type: 'json',
+      obsCode,
+      reqDate,
+      numOfRows: 10,
+    },
+    timeout: 5000,
+  });
+
+  const { header, body } = response.data || {};
+  if (!header || header.resultCode !== '00') {
+    throw new Error(`조석예보 API 오류: ${header?.resultCode} ${header?.resultMsg}`);
+  }
+
+  const item = body?.items?.item;
+  return Array.isArray(item) ? item : item ? [item] : [];
+}
+
 router.get('/tide/:obsCode', async (req, res) => {
   const { obsCode } = req.params;
-  const SERVICE_KEY = process.env.KHOA_SERVICE_KEY || '4cd68f7ec66632d267441cf3d4f9dcb30e8b691071f79b3525aeef1d46bffdf8';
 
-  const url = 'http://www.khoa.go.kr/oceangrid/grid/api/tideObsRecent/search.do';
+  if (!/^[A-Z]{2}_\d{4}$/.test(obsCode)) {
+    return res.status(400).json({ error: '관측소 코드 형식이 올바르지 않습니다. (예: DT_0012)' });
+  }
+  if (!process.env.KHOA_SERVICE_KEY && !process.env.PUBLIC_API_KEY) {
+    return res.status(500).json({ error: '.env 에 KHOA_SERVICE_KEY 가 없습니다.' });
+  }
 
   try {
-    // 타임아웃을 2초로 설정하여 KHOA 서버 응답 대기 시간을 최소화
-    const response = await axios.get(url, {
-      params: {
-        ServiceKey: SERVICE_KEY,
-        ObsCode: obsCode,
-        ResultType: 'json'
-      },
-      headers: {
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)'
-      },
-      timeout: 2000
+    const [today, tomorrow] = await Promise.all([
+      fetchTideDay(obsCode, kstDateString(0)),
+      fetchTideDay(obsCode, kstDateString(1)),
+    ]);
+
+    const all = [...today, ...tomorrow];
+    if (all.length === 0) {
+      return res.status(404).json({ error: '해당 관측소의 조석 예보가 없습니다.' });
+    }
+
+    res.json({
+      stationName: all[0].obsvtrNm,
+      events: all.map((item) => ({
+        time: item.predcDt,
+        level: Number(item.predcTdlvVl),
+        type: TIDE_TYPE[item.extrSe] || '-',
+      })),
     });
-
-    console.log(`[KHOA API 실제 데이터 수신 성공 - ${obsCode}]`);
-    return res.json(response.data);
-
   } catch (error) {
-    console.warn(`[KHOA API 지연/차단 -> 목업 데이터 전환 - ${obsCode}]: ${error.message}`);
-
-    // 관측소 코드 끝자리를 이용해 관측소마다 약간씩 다른 조위값 생성 (250cm ~ 450cm)
-    const codeNum = parseInt(obsCode.replace(/[^0-9]/g, '')) || 1;
-    const baseTide = 300 + (codeNum * 27) % 150;
-    const now = new Date();
-    const timeString = now.toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
-
-    return res.json({
-      result: {
-        data: {
-          tide_level: String(baseTide),
-          record_time: `${timeString}`
-        }
-      }
-    });
+    console.warn(`[조석예보 조회 실패 - ${obsCode}]: ${error.message}`);
+    res.status(502).json({ error: '조석 정보를 불러오지 못했습니다.' });
   }
 });
 
