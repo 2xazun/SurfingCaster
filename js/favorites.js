@@ -1,51 +1,102 @@
-const highlightList = document.querySelector(".highlight-list");
+// 즐겨찾기 - 백엔드 API 호출 + 즐겨찾기 페이지(highlight.html) 렌더링
 
-// 더미 데이터
-const HIGHLIGHTS = [
-  { id: 1, ST_ID: "ST_001", user_id: 1 },
-  { id: 2, ST_ID: "ST_002", user_id: 1 },
-  { id: 3, ST_ID: "ST_003", user_id: 2 },
-];
+// ===== 1. API 호출 함수 (모든 페이지에서 사용) =====
+async function getFavorites() {
+  const rows = await apiRequest("/favorites");
+  // DB에는 stationId만 있으므로 STATIONS 목데이터에서 장소 정보를 찾아 합침
+  return rows
+    .map((row) => STATIONS.find((station) => station.id === row.stationId))
+    .filter(Boolean);
+}
 
-const userId = 1;
-
-document.addEventListener("DOMContentLoaded", favorites);
-
-function favorites() {
-  // 유저의 하이라이트 목록
-  const user_highlight = HIGHLIGHTS.filter((h) => h.user_id === userId);
-  // 하이라이트들의 정보를 station에서 find
-  const highlight_statations = STATIONS.filter((station) => {
-    for (highlight of user_highlight) {
-      if (highlight.ST_ID === station.id) {
-        return true;
-      }
+async function addFavorite(station) {
+  if (!Auth.isLoggedIn()) {
+    if (confirm("즐겨찾기는 로그인 후 사용할 수 있어요. 로그인 페이지로 이동할까요?")) {
+      location.href = "/login.html";
     }
-  });
-  // li 태그 저장할 배열
-  let highlightTag = [];
-  for (station of highlight_statations) {
-    highlightTag.push(
-      `<li class="highlight">${station.name} <button class="delete">삭제</button></li>`,
-    );
+    return false;
   }
 
-  console.log(highlightTag);
-  highlightList.innerHTML = highlightTag.join("");
+  try {
+    await apiRequest("/favorites", { method: "POST", body: { stationId: station.id } });
+    notify(`⭐ ${station.name}을(를) 즐겨찾기에 추가했어요.`);
+    return true;
+  } catch (error) {
+    notify(error.message);
+    if (error.status === 401) location.href = "/login.html";
+    return false;
+  }
+}
 
-  const highlightElement = document.querySelectorAll(".highlight");
-  highlightElement.forEach((h) => {
-    h.addEventListener("click", function (e) {
-      let name = e.target.innerText.trim();
-      name = name.replace("삭제", "").trim();
-      console.log(name);
-      const findStation = STATIONS.find((station) => (station.name = name));
+async function removeFavorite(stationId) {
+  await apiRequest(`/favorites/${encodeURIComponent(stationId)}`, { method: "DELETE" });
+}
 
-      // 장소 데이터 저장
-      sessionStorage.setItem("selectedStation", JSON.stringify(findStation));
+// 메인 페이지로 이동하면서 해당 장소 정보를 보여주도록 전달
+function openStationOnMain(station) {
+  sessionStorage.setItem("selectedStation", JSON.stringify(station));
+  location.href = "/index.html";
+}
 
-      // 메인 페이지로 이동
-      location.href = "/index.html";
-    });
+// ===== 2. 즐겨찾기 페이지 렌더링 (highlight.html 에서만 동작) =====
+async function renderFavoritesPage() {
+  const highlightList = document.querySelector(".highlight-list");
+  if (!highlightList) return;
+
+  if (!Auth.requireLogin()) return;
+
+  let stations;
+  try {
+    stations = await getFavorites();
+  } catch (error) {
+    highlightList.innerHTML = `<li class="highlight-empty">${error.message}</li>`;
+    if (error.status === 401) location.href = "/login.html";
+    return;
+  }
+
+  if (stations.length === 0) {
+    highlightList.innerHTML = `<li class="highlight-empty">아직 즐겨찾기한 장소가 없어요.</li>`;
+    return;
+  }
+
+  highlightList.innerHTML = stations
+    .map(
+      (station) =>
+        `<li class="highlight" data-id="${station.id}">
+          <span class="highlight-name">${station.name}</span>
+          <button class="delete" data-id="${station.id}">삭제</button>
+        </li>`,
+    )
+    .join("");
+}
+
+function bindFavoritesPageEvents() {
+  const highlightList = document.querySelector(".highlight-list");
+  if (!highlightList) return;
+
+  // 이벤트 위임: li가 다시 그려져도 리스너는 한 번만 등록
+  highlightList.addEventListener("click", async (e) => {
+    const deleteButton = e.target.closest(".delete");
+    if (deleteButton) {
+      e.stopPropagation(); // 삭제 버튼 누를 때 페이지 이동 막기
+      const stationId = deleteButton.dataset.id;
+      try {
+        await removeFavorite(stationId);
+        renderFavoritesPage();
+      } catch (error) {
+        alert(error.message);
+      }
+      return;
+    }
+
+    const item = e.target.closest(".highlight");
+    if (!item) return;
+    const station = STATIONS.find((s) => s.id === item.dataset.id);
+    if (station) openStationOnMain(station);
   });
 }
+
+document.addEventListener("DOMContentLoaded", () => {
+  bindFavoritesPageEvents();
+  renderFavoritesPage();
+});
