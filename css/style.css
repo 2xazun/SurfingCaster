@@ -1,5 +1,5 @@
 :root {
-  --wave-height: 100px;
+  --wave-height: 0px;
 }
 
 * {
@@ -7,6 +7,17 @@
   padding: 0;
   box-sizing: border-box;
   font-family: "Poppins", sans-serif;
+}
+
+.informations-items {
+  width: 300px;
+}
+
+.highlight-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
 .main-container {
@@ -17,12 +28,27 @@
   background-color: #f8f9fa;
 }
 
+.myPage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+a {
+  display: inline-block;
+  width: 30px;
+}
+
+.profile-image {
+  max-width: none;
+}
+
 .left-panner {
   display: flex;
   width: 40%;
   height: 100%;
   flex-direction: column;
-  align-items: flex-start;
   padding: 20px 0 20px 20px;
   background-color: #ffffff;
   border-right: 1px solid rgba(0, 0, 0, 0.15);
@@ -34,6 +60,7 @@
   height: 40px;
   width: 206px;
   margin-bottom: 10px;
+  max-width: none;
 }
 
 .information-container {
@@ -46,7 +73,7 @@
 }
 
 .search {
-  display: block;
+  display: inline-block;
   width: 300px;
   height: 40px;
   padding-left: 12px;
@@ -54,18 +81,47 @@
   border: 1px solid #e0e0e0;
   background-color: #f3f3f3;
   outline: none;
+  margin-left: 10px;
 }
 
 .informations {
-  width: 300px;
+  width: 100%;
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: center;
+  justify-content: center;
 }
 
-.highlighting {
-  margin-top: 25px;
-  height: 30px;
+highlight-list {
+  margin-top: 50px;
+  display: flex;
+  justify-content: center;
+}
+
+.highlight-detail {
+  color: #717171;
+  font-size: 14px;
+}
+
+.userItems {
+  display: flex;
+  flex-direction: column;
+  width: 80%;
+  padding: 20px;
+  border-bottom: #333 solid 1px;
+  align-items: center;
+}
+
+.logout-button {
+  margin-top: 50px;
+  width: 200px;
+  height: 50px;
+  border: none;
+  border-radius: 10px;
+}
+
+div {
+  display: inline-block;
 }
 
 ul {
@@ -84,9 +140,23 @@ ul {
   margin-left: 5px;
 }
 
+h3 {
+  display: inline-block;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+}
+
+.back {
+  width: 30px;
+  height: 30px;
+}
+
 .live {
   height: 30px;
-  margin-top: 20px;
+  margin-top: 70px;
 }
 
 .sea-situation {
@@ -94,7 +164,6 @@ ul {
   margin-top: 10px;
   display: flex;
   justify-content: center;
-  width: 300px;
   height: 180px;
   background: linear-gradient(#eaf8ff, #76c7f2);
   border-radius: 12px;
@@ -130,13 +199,17 @@ ul {
 }
 
 @keyframes wave-flow {
-  0% { transform: translateX(-50%); }
-  100% { transform: translateX(0); }
+  0% {
+    transform: translateX(-50%);
+  }
+  100% {
+    transform: translateX(0);
+  }
 }
 
 .detail {
   height: 30px;
-  margin-top: 20px;
+  margin-top: 30px;
 }
 
 .map-container {
@@ -156,16 +229,27 @@ ul {
 }
 
 .search-container {
-  flex-direction: column;
+  display: flex;
+  align-items: center;
+  justify-items: center;
   box-sizing: border-box;
-  width: 300px;
   position: relative;
+  margin-top: 20px;
+  gap: 20px;
 }
 
 .search-results {
   display: inline-block;
   width: 100%;
   padding: 10px 20px;
+}
+
+.highlight-list {
+  margin-top: 50px;
+}
+
+a {
+  text-decoration: none;
 }
 
 .search-list {
