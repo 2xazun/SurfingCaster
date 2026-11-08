@@ -4,33 +4,52 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>회원가입 | SurfingCaster</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css"
+    />
     <link rel="stylesheet" href="css/signup-login-style.css" />
   </head>
   <body>
+    <header class="auth-headline">
+      <h1>파도 타러 갈 준비 됐나요?</h1>
+      <p class="auth-sub">가입하면 자주 가는 바다를 한 번에 확인할 수 있어요</p>
+    </header>
+
     <form class="box-cotainer" id="signup-form" novalidate>
       <a href="/index.html" class="logo-link"
-        ><img class="logo-image" src="assets/icons/logo.svg" alt="SurfingCaster"
+        ><img class="logo-image" src="assets/icons/logo.svg" alt="SurfingCaster 메인으로"
       /></a>
-      <input type="text" id="signup-name" placeholder="Name" autocomplete="name" />
+
+      <label for="signup-name">이름</label>
+      <input type="text" id="signup-name" placeholder="이름을 입력하세요" autocomplete="name" />
+
+      <label for="signup-id">아이디</label>
       <input
         type="text"
         id="signup-id"
-        placeholder="ID (영문/숫자 4~20자)"
+        placeholder="영문, 숫자 4~20자"
         autocomplete="username"
       />
+
+      <label for="signup-password">비밀번호</label>
       <input
         type="password"
         id="signup-password"
-        placeholder="Password (4자 이상)"
+        placeholder="4자 이상"
         autocomplete="new-password"
-        style="margin-bottom: 20px"
       />
-      <p class="form-message" id="signup-message"></p>
-      <button type="submit">SignUp</button>
-      <div>
-        이미 계정이 있으신가요?
-        <a href="/login.html" style="display: inline-block">Login</a>
-      </div>
+
+      <p class="form-message" id="signup-message" role="alert"></p>
+      <button type="submit">가입하기</button>
+
+      <p class="switch">이미 계정이 있나요?<a href="/login.html">로그인</a></p>
     </form>
 
     <script src="js/auth.js"></script>

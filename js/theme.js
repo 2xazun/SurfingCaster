@@ -1,4 +1,40 @@
+// 파고에 따라 바다 카드 테마(배경색)와 파도 애니메이션(높이/색/속도)을 바꿈
+//   calm  : 0.5m 이하  -> 민트, 느린 파도
+//   good  : 0.5m ~ 2m  -> 파랑, 보통 파도
+//   rough : 2m 이상     -> 산호색, 빠르고 높은 파도
+const SEA_THEMES = {
+  calm: {
+    height: "90px",
+    colors: ["#bff0e1", "#9fe3cf", "#7fd3bb"],
+    durations: ["12s", "10s", "8s"],
+  },
+  good: {
+    height: "130px",
+    colors: ["#bfe3f7", "#8ccbee", "#4fa8dc"],
+    durations: ["8s", "6s", "4s"],
+  },
+  rough: {
+    height: "150px",
+    colors: ["#ffd0c2", "#ffad96", "#ff7a5c"],
+    durations: ["4s", "2.5s", "1.5s"],
+  },
+};
+
+function seaLevelOf(waveHeight) {
+  if (waveHeight <= 0.5) return "calm";
+  if (waveHeight < 2.0) return "good";
+  return "rough";
+}
+
+// body[data-sea] 를 바꾸면 theme.css 의 색 변수가 바뀜
+function setSeaTheme(level) {
+  document.body.dataset.sea = level;
+}
+
 function updateWave(waveHeight) {
+  const level = seaLevelOf(waveHeight);
+  setSeaTheme(level);
+
   const wave = document.querySelector(".wave");
   if (!wave) return;
 
@@ -9,32 +45,13 @@ function updateWave(waveHeight) {
     return;
   }
 
-  if (waveHeight <= 0.5) {
-    wave.style.height = "100px";
-    svgElement.style.setProperty("--wave-color-1", "#A9E3D5");
-    svgElement.style.setProperty("--wave-color-2", "#AEE7D7");
-    svgElement.style.setProperty("--wave-color-3", "#A4DBCC");
-
-    svgElement.style.setProperty("--wave-dur-1", "12s");
-    svgElement.style.setProperty("--wave-dur-2", "10s");
-    svgElement.style.setProperty("--wave-dur-3", "8s");
-  } else if (waveHeight < 2.0) {
-    wave.style.height = "150px";
-    svgElement.style.setProperty("--wave-color-1", "#9DD8E5");
-    svgElement.style.setProperty("--wave-color-2", "#ABD9E4");
-    svgElement.style.setProperty("--wave-color-3", "#91CEDC");
-
-    svgElement.style.setProperty("--wave-dur-1", "8s");
-    svgElement.style.setProperty("--wave-dur-2", "6s");
-    svgElement.style.setProperty("--wave-dur-3", "4s");
-  } else {
-    wave.style.height = "200px";
-    svgElement.style.setProperty("--wave-color-1", "#E59D9D");
-    svgElement.style.setProperty("--wave-color-2", "#C99292");
-    svgElement.style.setProperty("--wave-color-3", "#CC6A6A");
-
-    svgElement.style.setProperty("--wave-dur-1", "4s");
-    svgElement.style.setProperty("--wave-dur-2", "2s");
-    svgElement.style.setProperty("--wave-dur-3", "1s");
-  }
+  const theme = SEA_THEMES[level];
+  wave.style.height = theme.height;
+  theme.colors.forEach((color, i) => {
+    svgElement.style.setProperty(`--wave-color-${i + 1}`, color);
+  });
+  // SVG <animate> 의 dur 를 직접 바꿔서 파도 속도 조절
+  svgElement.querySelectorAll("animate").forEach((animate, i) => {
+    animate.setAttribute("dur", theme.durations[i] || theme.durations[0]);
+  });
 }

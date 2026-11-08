@@ -48,7 +48,7 @@ async function fetchWeatherData(beachCode) {
   }
 }
 
-// 2. 국립해양조사원 조석 데이터 조회 (Node.js 백엔드 프록시 경유)
+// 2. 국립해양조사원 조석예보(고조/저조) 조회 (Node.js 백엔드 프록시 경유)
 async function fetchTideData(obsCode) {
   if (!obsCode) return null;
 
@@ -89,12 +89,37 @@ async function fetchWaterTemp(beachCode) {
   }
 }
 
-// 4. Promise.allSettled 이용 병렬 호출 (날씨 + 수온 + 조석 3개를 동시에 요청)
+// 4. 기상청 해수욕장 실측 파고 조회 (부이 관측값, 예보값보다 정확)
+async function fetchWaveHeight(beachCode) {
+  if (!beachCode) return null;
+
+  const t = new Date(Date.now() - 60 * 60 * 1000);
+  const searchTime =
+    t.getFullYear().toString() +
+    String(t.getMonth() + 1).padStart(2, "0") +
+    String(t.getDate()).padStart(2, "0") +
+    String(t.getHours()).padStart(2, "0") +
+    "00";
+
+  const url = `https://apis.data.go.kr/1360000/BeachInfoservice/getWhBuoyBeach?serviceKey=${SERVICE_KEY}&dataType=JSON&beach_num=${beachCode}&searchTime=${searchTime}`;
+
+  try {
+    const response = await fetch(url);
+    if (!response.ok) throw new Error(`파고 API 응답 오류 (${response.status})`);
+    return await response.json();
+  } catch (error) {
+    console.error("fetchWaveHeight 에러:", error);
+    return null;
+  }
+}
+
+// 5. Promise.allSettled 이용 병렬 호출 (날씨 + 수온 + 실측 파고 + 조석 4개를 동시에 요청)
 async function fetchAllMarineData(beachCode, obsCode) {
   // Promise.all 대신 Promise.allSettled를 사용하면 API 중 하나가 실패해도 나머지 성공한 데이터는 정상 활용 가능
-  const [weatherResult, waterResult, tideResult] = await Promise.allSettled([
+  const [weatherResult, waterResult, waveResult, tideResult] = await Promise.allSettled([
     fetchWeatherData(beachCode),
     fetchWaterTemp(beachCode),
+    fetchWaveHeight(beachCode),
     fetchTideData(obsCode),
   ]);
 
@@ -103,6 +128,7 @@ async function fetchAllMarineData(beachCode, obsCode) {
   return {
     weather: valueOf(weatherResult),
     water: valueOf(waterResult),
+    wave: valueOf(waveResult),
     tide: valueOf(tideResult),
   };
 }

@@ -80,3 +80,18 @@ function notify(message) {
     alert(message);
   }
 }
+
+// 상단 계정 버튼: 로그인 상태면 "이름님", 아니면 "로그인"
+document.addEventListener("DOMContentLoaded", () => {
+  const accountLink = document.querySelector(".account-link");
+  if (!accountLink) return;
+
+  const user = Auth.getUser();
+  if (Auth.isLoggedIn() && user) {
+    accountLink.textContent = `${user.name}님`;
+    accountLink.href = "/myPage.html";
+  } else {
+    accountLink.textContent = "로그인";
+    accountLink.href = "/login.html";
+  }
+});

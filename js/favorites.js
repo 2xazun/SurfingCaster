@@ -55,7 +55,7 @@ async function renderFavoritesPage() {
   }
 
   if (stations.length === 0) {
-    highlightList.innerHTML = `<li class="highlight-empty">아직 즐겨찾기한 장소가 없어요.</li>`;
+    highlightList.innerHTML = `<li class="highlight-empty">아직 담은 바다가 없어요.<br />오른쪽 지도에서 마음에 드는 해변 마커를 두 번 눌러 담아보세요.</li>`;
     return;
   }
 
@@ -64,7 +64,7 @@ async function renderFavoritesPage() {
       (station) =>
         `<li class="highlight" data-id="${station.id}">
           <span class="highlight-name">${station.name}</span>
-          <button class="delete" data-id="${station.id}">삭제</button>
+          <button class="delete" data-id="${station.id}" aria-label="${station.name} 즐겨찾기에서 빼기">빼기</button>
         </li>`,
     )
     .join("");
