@@ -1,322 +1,807 @@
+/* =========================================================
+   SurfingCaster 공통 스타일
+   색: 깊은 바다 남색 + 노을 산호색 / 글꼴: Black Han Sans(제목) + Pretendard(본문)
+   바다 상태별 색은 theme.css 에서 body[data-sea] 로 바뀜
+   ========================================================= */
 :root {
-  --wave-height: 0px;
+  --deep: #0b2e4a; /* 깊은 바다: 기본 글자색 */
+  --surf: #1e88c8; /* 파도 파랑: 링크, 포커스 */
+  --foam: #f1f7fa; /* 물거품: 바탕 */
+  --sand: #f6ead2; /* 모래: 보조 바탕 */
+  --coral: #ff5a3c; /* 노을 산호: 강조, 위험 */
+  --muted: #5b7486; /* 보조 글자 */
+  --line: #d6e3ea; /* 구분선 */
+  --white: #ffffff;
+
+  --font-display: "Black Han Sans", "Pretendard", sans-serif;
+  --font-body: "Pretendard", -apple-system, "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
 }
 
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: "Poppins", sans-serif;
 }
 
-.informations-items {
-  width: 300px;
+html,
+body {
+  height: 100%;
 }
 
-.highlight-page {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
-
-.main-container {
-  display: flex;
-  height: 100vh;
-  width: 100vw;
-  overflow: hidden;
-  background-color: #f8f9fa;
-}
-
-.myPage {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+body {
+  font-family: var(--font-body);
+  color: var(--deep);
+  background: var(--foam);
+  -webkit-font-smoothing: antialiased;
 }
 
 a {
-  display: inline-block;
-  width: 30px;
-}
-
-.profile-image {
-  max-width: none;
-}
-
-.left-panner {
-  display: flex;
-  width: 40%;
-  height: 100%;
-  flex-direction: column;
-  padding: 20px 0 20px 20px;
-  background-color: #ffffff;
-  border-right: 1px solid rgba(0, 0, 0, 0.15);
-  z-index: 10;
-}
-
-.logo-image {
-  display: block;
-  height: 40px;
-  width: 206px;
-  margin-bottom: 10px;
-  max-width: none;
-}
-
-.information-container {
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  width: 100%;
-  align-items: center;
-  overflow-y: auto;
-}
-
-.search {
-  display: inline-block;
-  width: 300px;
-  height: 40px;
-  padding-left: 12px;
-  border-radius: 10px;
-  border: 1px solid #e0e0e0;
-  background-color: #f3f3f3;
-  outline: none;
-  margin-left: 10px;
-}
-
-.informations {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
-
-highlight-list {
-  margin-top: 50px;
-  display: flex;
-  justify-content: center;
-}
-
-.highlight-detail {
-  color: #717171;
-  font-size: 14px;
-}
-
-.userItems {
-  display: flex;
-  flex-direction: column;
-  width: 80%;
-  padding: 20px;
-  border-bottom: #333 solid 1px;
-  align-items: center;
-}
-
-.logout-button {
-  margin-top: 50px;
-  width: 200px;
-  height: 50px;
-  border: none;
-  border-radius: 10px;
-}
-
-div {
-  display: inline-block;
-}
-
-ul {
-  list-style-position: inside;
-  width: 100%;
-}
-
-.delete {
-  background-color: #ff4d4f;
-  color: #ffffff;
-  border-radius: 6px;
-  border: none;
-  padding: 2px 8px;
-  font-size: 12px;
-  cursor: pointer;
-  margin-left: 5px;
-}
-
-h3 {
-  display: inline-block;
-}
-
-.header {
-  display: flex;
-  align-items: center;
-}
-
-.back {
-  width: 30px;
-  height: 30px;
-}
-
-.live {
-  height: 30px;
-  margin-top: 70px;
-}
-
-.sea-situation {
-  position: relative;
-  margin-top: 10px;
-  display: flex;
-  justify-content: center;
-  height: 180px;
-  background: linear-gradient(#eaf8ff, #76c7f2);
-  border-radius: 12px;
-  overflow: hidden;
-}
-
-.wave {
-  --wave-height: 100px;
-  width: 200%;
-  display: inline-block;
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  height: var(--wave-height);
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 120' preserveAspectRatio='none'%3E%3Cdefs%3E%3ClinearGradient id='wave-grad' x1='0' y1='0' x2='0' y2='1'%3E%3Cstop offset='0%25' stop-color='%2360a5fa' stop-opacity='0.2'/%3E%3Cstop offset='100%25' stop-color='%231d4ed8' stop-opacity='0.8'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath d='M0,10 C 0,0 0,60 600, 60 C 600, 60 600,0 1200,0 L1200,120 L0,120 Z' fill='url(%23wave-grad)' fill-opacity='0.4'%3E%3C/path%3E%3C/svg%3E");
-  background-size: 50% 100%;
-  background-repeat: repeat-x;
-  transform-origin: bottom center;
-  animation: wave-flow 2s linear infinite;
-}
-
-.wave-information {
-  padding: 6px 12px;
-  position: absolute;
-  bottom: 15px;
-  background-color: rgba(255, 255, 255, 0.6);
-  backdrop-filter: blur(4px);
-  border-radius: 20px;
-  border: 1px solid rgba(0, 0, 0, 0.1);
-  font-size: 11px;
-  color: #333;
-  font-weight: 500;
-}
-
-@keyframes wave-flow {
-  0% {
-    transform: translateX(-50%);
-  }
-  100% {
-    transform: translateX(0);
-  }
-}
-
-.detail {
-  height: 30px;
-  margin-top: 30px;
-}
-
-.map-container {
-  width: 60%;
-  height: 100%;
-  padding: 16px;
-  background-color: #f8f9fa;
-}
-
-#map {
-  width: 100%;
-  height: 100vh;
-  border-radius: 16px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-  overflow: hidden;
-  background-color: #e5e3df;
-}
-
-.search-container {
-  display: flex;
-  align-items: center;
-  justify-items: center;
-  box-sizing: border-box;
-  position: relative;
-  margin-top: 20px;
-  gap: 20px;
-}
-
-.search-results {
-  display: inline-block;
-  width: 100%;
-  padding: 10px 20px;
-}
-
-.highlight-list {
-  margin-top: 50px;
-}
-
-a {
+  color: inherit;
   text-decoration: none;
 }
 
-.search-list {
-  display: flex;
-  flex-direction: column;
-  position: absolute;
-  top: 100%;
-  left: 0;
-  box-shadow:
-    0 10px 20px rgba(0, 0, 0, 0.19),
-    0 6px 6px rgba(0, 0, 0, 0.23);
-  background-color: #fff;
-  border-radius: 10px;
-  z-index: 9999;
-  width: 100%;
-}
-.hidden {
-  opacity: 0;
-}
-
-.current-station {
-  margin-top: 8px;
-  font-size: 15px;
-  font-weight: 600;
-  color: #333;
-}
-
-.highlight {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 10px;
-  min-width: 260px;
-  padding: 12px 16px;
-  margin-bottom: 8px;
-  border-radius: 10px;
-  background-color: #f3f6f9;
+button {
+  font: inherit;
   cursor: pointer;
 }
 
-.highlight:hover {
-  background-color: #e6eef5;
-}
-
-.highlight-empty {
-  list-style: none;
-  color: #717171;
-  font-size: 14px;
-}
-
-.search-results {
-  cursor: pointer;
-}
-
-.search-results:hover {
-  background-color: #f3f6f9;
-}
-
-.search-empty {
-  color: #999;
-  cursor: default;
+:focus-visible {
+  outline: 3px solid var(--surf);
+  outline-offset: 2px;
+  border-radius: 6px;
 }
 
 .hidden {
   display: none !important;
 }
 
-.logout-button {
+/* ---------- 레이아웃: 왼쪽 패널 + 오른쪽 지도 ---------- */
+.main-container {
+  display: flex;
+  height: 100vh;
+  width: 100%;
+  overflow: hidden;
+}
+
+.left-panner {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  width: 420px;
+  min-width: 360px;
+  height: 100%;
+  padding: 20px 24px 24px;
+  background: var(--white);
+  overflow-y: auto;
+  z-index: 10;
+}
+
+.map-container {
+  flex: 1;
+  height: 100%;
+  padding: 14px;
+  background: var(--foam);
+}
+
+#map {
+  width: 100%;
+  height: 100%;
+  border-radius: 20px;
+  overflow: hidden;
+  background: #cfe6f1;
+}
+
+/* ---------- 상단: 로고 + 계정 ---------- */
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.logo-link {
+  display: block;
+}
+
+.logo-image {
+  display: block;
+  height: 40px;
+  width: auto;
+}
+
+.account-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 38px;
+  padding: 0 14px 0 6px;
+  border-radius: 999px;
+  background: var(--foam);
+  font-size: 14px;
+  font-weight: 600;
+  transition: background-color 0.2s;
+}
+
+.account-link::before {
+  content: "";
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: var(--deep) url("../assets/icons/Profile.svg") center / 70% no-repeat;
+  filter: saturate(0);
+}
+
+.account-link:hover {
+  background: #e3eef4;
+}
+
+/* ---------- 검색 ---------- */
+.search-container {
+  position: relative;
+}
+
+.search {
+  width: 100%;
+  height: 48px;
+  padding: 0 16px 0 44px;
+  border: 2px solid var(--line);
+  border-radius: 14px;
+  background: var(--foam) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='%235b7486' stroke-width='2.4' stroke-linecap='round'%3E%3Ccircle cx='11' cy='11' r='7'/%3E%3Cpath d='M20 20l-3.5-3.5'/%3E%3C/svg%3E") 14px center no-repeat;
+  font: inherit;
+  font-size: 15px;
+  color: var(--deep);
+  outline: none;
+  transition: border-color 0.2s, background-color 0.2s;
+}
+
+.search::placeholder {
+  color: #8aa0ae;
+}
+
+.search:focus {
+  border-color: var(--surf);
+  background-color: var(--white);
+}
+
+.search-list {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: 6px;
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  box-shadow: 0 14px 30px rgba(11, 46, 74, 0.16);
+  z-index: 100;
+}
+
+.search-results {
+  padding: 11px 12px;
+  border-radius: 10px;
+  font-size: 15px;
   cursor: pointer;
+}
+
+.search-results:hover {
+  background: var(--foam);
+}
+
+.search-empty {
+  color: var(--muted);
+  cursor: default;
+}
+
+.search-empty:hover {
+  background: none;
+}
+
+/* ---------- 바다 카드 (이 페이지의 주인공) ---------- */
+.sea-card {
+  position: relative;
+  min-height: 300px;
+  padding: 20px 22px 0;
+  border-radius: 24px;
+  overflow: hidden;
+  color: var(--sea-ink);
+  background: linear-gradient(170deg, var(--sea-top) 0%, var(--sea-bottom) 100%);
+  transition: background 0.6s, color 0.6s;
+}
+
+.sea-card-top {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.current-station {
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.wave-source {
+  font-size: 12px;
+  font-weight: 600;
+  opacity: 0.75;
+}
+
+.wave-number {
+  position: relative;
+  z-index: 2;
+  margin-top: 6px;
+  font-family: var(--font-display);
+  font-size: 108px;
+  line-height: 1;
+  letter-spacing: -2px;
+}
+
+.wave-unit {
+  margin-left: 6px;
+  font-size: 40px;
+  letter-spacing: 0;
+}
+
+.surf-verdict {
+  position: relative;
+  z-index: 2;
+  margin-top: 8px;
+  max-width: 280px;
+  font-size: 19px;
+  font-weight: 800;
+  line-height: 1.35;
+  word-break: keep-all;
+}
+
+/* 파도 애니메이션 SVG: 카드 바닥에 깔림 (높이는 theme.js 가 파고에 맞춰 조절) */
+.wave {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 120px;
+  pointer-events: none;
+  z-index: 1;
+  transition: height 0.8s ease;
+}
+
+/* ---------- 세부 정보 ---------- */
+.sea-stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  border-top: 2px solid var(--deep);
+}
+
+.stat {
+  padding: 14px 4px;
+  border-bottom: 1px solid var(--line);
+}
+
+.stat + .stat:not(.stat-wide) {
+  padding-left: 16px;
+  border-left: 1px solid var(--line);
+}
+
+.stat-wide {
+  grid-column: 1 / -1;
+}
+
+.stat dt {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--muted);
+}
+
+.stat dd {
+  margin-top: 4px;
+  font-size: 24px;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+}
+
+.stat dd small {
+  margin-left: 3px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--muted);
+}
+
+.stat-wide dd {
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1.6;
+}
+
+.map-hint {
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--muted);
+  word-break: keep-all;
+}
+
+.map-hint b {
+  color: var(--deep);
+}
+
+/* ---------- 토스트 ---------- */
+.toast {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  z-index: 9999;
+  width: max-content;
+  max-width: calc(100% - 32px);
+  padding: 12px 18px;
+  border-radius: 14px;
+  background: var(--deep);
+  color: var(--white);
+  font-size: 14px;
+  font-weight: 600;
+  box-shadow: 0 12px 28px rgba(11, 46, 74, 0.3);
+  transform: translate(-50%, -12px);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s, transform 0.3s, visibility 0.3s;
+}
+
+.toast.is-visible {
+  transform: translate(-50%, 0);
+  opacity: 1;
+  visibility: visible;
+}
+
+/* ---------- 서브 페이지 공통 (마이페이지 / 즐겨찾기) ---------- */
+.page-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  transition: background-color 0.2s;
+}
+
+.back-link:hover {
+  background: var(--foam);
+}
+
+.back {
+  width: 22px;
+  height: 22px;
+}
+
+.page-title {
+  font-family: var(--font-display);
+  font-size: 30px;
+  font-weight: 400;
+  letter-spacing: -0.5px;
+}
+
+/* 마이페이지 */
+.profile-hero {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 22px;
+  border-radius: 24px;
+  background: linear-gradient(160deg, #1e88c8 0%, #0b2e4a 100%);
+  color: var(--white);
+  overflow: hidden;
+}
+
+.profile-hero::after {
+  content: "";
+  position: absolute;
+  inset: auto -10% -40px -10%;
+  height: 90px;
+  background: url("../assets/icons/wave.svg") center / 100% 100% no-repeat;
+  opacity: 0.35;
+}
+
+.avatar {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: var(--coral);
+  font-family: var(--font-display);
+  font-size: 32px;
+}
+
+.profile-text {
+  position: relative;
+  z-index: 1;
+}
+
+.profile-name {
+  font-size: 24px;
+  font-weight: 800;
+}
+
+.profile-id {
+  margin-top: 2px;
+  font-size: 14px;
+  opacity: 0.8;
+}
+
+.menu-list {
+  list-style: none;
+  border-top: 2px solid var(--deep);
+}
+
+.menu-list a,
+.menu-list button {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 18px 4px;
+  border: none;
+  border-bottom: 1px solid var(--line);
+  background: none;
+  color: var(--deep);
+  font-size: 17px;
+  font-weight: 700;
+  text-align: left;
+}
+
+.menu-list a:hover,
+.menu-list button:hover {
+  color: var(--surf);
+}
+
+.menu-count {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--muted);
+}
+
+.menu-list .logout-button {
+  color: var(--coral);
+}
+
+/* 즐겨찾기 */
+.highlight-detail {
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--muted);
+  word-break: keep-all;
+}
+
+.highlight-list {
+  list-style: none;
+  border-top: 2px solid var(--deep);
+}
+
+.highlight {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 16px 4px;
+  border-bottom: 1px solid var(--line);
+  cursor: pointer;
+}
+
+.highlight-name {
+  font-size: 17px;
+  font-weight: 700;
+}
+
+.highlight:hover .highlight-name {
+  color: var(--surf);
+}
+
+.delete {
+  flex-shrink: 0;
+  padding: 7px 12px;
+  border: 1.5px solid var(--line);
+  border-radius: 999px;
+  background: var(--white);
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 600;
+  transition: color 0.2s, border-color 0.2s;
+}
+
+.delete:hover {
+  border-color: var(--coral);
+  color: var(--coral);
+}
+
+.highlight-empty {
+  padding: 28px 4px;
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--muted);
+  word-break: keep-all;
+}
+
+/* ---------- 작은 화면: 위아래로 쌓기 ---------- */
+@media (max-width: 860px) {
+  .main-container {
+    flex-direction: column;
+    height: auto;
+    overflow: visible;
+  }
+
+  .left-panner {
+    width: 100%;
+    min-width: 0;
+    height: auto;
+    padding: 16px;
+    overflow: visible;
+  }
+
+  .map-container {
+    height: 70vh;
+    padding: 0 16px 16px;
+  }
+
+  .wave-number {
+    font-size: 88px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition: none !important;
+  }
+}
+
+/* 물때는 두 줄(다음 만조 / 다음 간조)로 표시 */
+.Tide {
+  white-space: pre-line;
+}
+
+/* ---------- 지도 위 파고 핀 ---------- */
+.map-container {
+  position: relative;
+}
+
+.spot-pin {
+  --pin-bg: #ffffff;
+  --pin-ink: var(--deep);
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 11px 6px 8px;
+  border: 2px solid #ffffff;
+  border-radius: 999px;
+  background: var(--pin-bg);
+  color: var(--pin-ink);
+  font-family: var(--font-body);
+  white-space: nowrap;
+  box-shadow: 0 4px 12px rgba(11, 46, 74, 0.28);
+  cursor: pointer;
+  transition: transform 0.15s;
+}
+
+/* 알약 아래 꼭지 */
+.spot-pin::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: -7px;
+  width: 10px;
+  height: 10px;
+  background: var(--pin-bg);
+  border-right: 2px solid #ffffff;
+  border-bottom: 2px solid #ffffff;
+  transform: translateX(-50%) rotate(45deg);
+}
+
+.spot-pin[data-sea="calm"] {
+  --pin-bg: #3fc4a3;
+  --pin-ink: #ffffff;
+}
+
+.spot-pin[data-sea="good"] {
+  --pin-bg: #1e88c8;
+  --pin-ink: #ffffff;
+}
+
+.spot-pin[data-sea="rough"] {
+  --pin-bg: #ff5a3c;
+  --pin-ink: #ffffff;
+}
+
+.spot-pin[data-sea="unknown"] {
+  --pin-bg: #9fb2bf;
+  --pin-ink: #ffffff;
+}
+
+.pin-height {
+  font-family: var(--font-display);
+  font-size: 16px;
+  line-height: 1;
+}
+
+.pin-name {
+  font-size: 12px;
+  font-weight: 700;
+  opacity: 0.92;
+}
+
+.spot-pin:hover,
+.spot-pin:focus-visible {
+  transform: scale(1.12);
+  z-index: 2;
+}
+
+/* 지금 보고 있는 바다 */
+.spot-pin.is-active {
+  transform: scale(1.18);
+  outline: 3px solid var(--deep);
+  outline-offset: 2px;
+}
+
+.spot-pin[data-sea="loading"] {
+  animation: pin-wait 1.2s ease-in-out infinite;
+}
+
+@keyframes pin-wait {
+  50% {
+    opacity: 0.55;
+  }
+}
+
+/* 지도 범례 */
+.map-legend {
+  position: absolute;
+  left: 30px;
+  bottom: 30px;
+  z-index: 5;
+  display: flex;
+  gap: 14px;
+  padding: 10px 14px;
+  list-style: none;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.94);
+  box-shadow: 0 6px 18px rgba(11, 46, 74, 0.18);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.map-legend li {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.map-legend li::before {
+  content: "";
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+}
+
+.map-legend [data-sea="calm"]::before {
+  background: #3fc4a3;
+}
+
+.map-legend [data-sea="good"]::before {
+  background: #1e88c8;
+}
+
+.map-legend [data-sea="rough"]::before {
+  background: #ff5a3c;
+}
+
+/* ---------- 지금 서핑하기 좋은 바다 TOP 3 ---------- */
+.section-title {
+  margin-bottom: 10px;
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 400;
+}
+
+.top-spots-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.top-spot {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 10px 14px 10px 10px;
+  border: 2px solid var(--line);
+  border-radius: 16px;
+  background: var(--white);
+  color: var(--deep);
+  text-align: left;
+  transition: border-color 0.2s;
+}
+
+.top-spot:hover {
+  border-color: var(--surf);
+}
+
+.top-rank {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: var(--deep);
+  color: var(--white);
+  font-family: var(--font-display);
+  font-size: 18px;
+}
+
+.top-spot:first-child .top-rank,
+.top-spots-list li:first-child .top-rank {
+  background: var(--coral);
+}
+
+.top-name {
+  flex: 1;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.top-height {
+  font-family: var(--font-display);
+  font-size: 22px;
+  color: var(--surf);
+}
+
+.top-spot[data-sea="rough"] .top-height {
+  color: var(--coral);
+}
+
+.top-spots-empty {
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--muted);
+  word-break: keep-all;
+}
+
+@media (max-width: 860px) {
+  .map-legend {
+    left: 26px;
+    bottom: 26px;
+    gap: 10px;
+    font-size: 12px;
+  }
+}
+
+/* 멀리 볼 때: 숫자만 보이는 작은 핀 */
+.pins-compact .pin-name {
+  display: none;
+}
+
+.pins-compact .spot-pin {
+  padding: 5px 8px;
+}
+
+.pins-compact .pin-height {
+  font-size: 14px;
+}
+
+/* 작은 핀이라도 마우스를 올리거나 보고 있는 바다는 이름 표시 */
+.pins-compact .spot-pin:hover .pin-name,
+.pins-compact .spot-pin.is-active .pin-name {
+  display: inline;
 }

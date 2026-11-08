@@ -1,38 +1,36 @@
-.sea-situation {
-  position: relative;
-  margin-top: 10px;
-  display: flex;
-  justify-content: center;
-  width: 300px;
-  height: 200px;
-  background: linear-gradient(#eaf8ff, #76c7f2);
-  border-radius: 6px;
-  overflow: hidden;
+/* =========================================================
+   해양 상태별 테마 색상 변수
+   theme.js 가 파고에 따라 body 의 data-sea 값을 바꾸면 바다 카드 색이 통째로 바뀜
+     calm  : 0.5m 이하   -> 민트 (잔잔)
+     good  : 0.5m ~ 2m   -> 파랑 (서핑 적기)
+     rough : 2m 이상      -> 산호색 (위험)
+   ========================================================= */
+body {
+  --sea-top: #d9eef9;
+  --sea-bottom: #74bfe8;
+  --sea-ink: #0b2e4a;
 }
 
-.wave {
-  width: 200%;
-  display: inline-block;
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  height: var(--wave-height);
-  background-image: url("../assets/icons/wave.svg");
-  background-repeat: no-repeat;
-  transform-origin: bottom center;
-  background-size: 100% 300px;
-  animation: 6s linear infinite;
+body[data-sea="calm"] {
+  --sea-top: #e2f7f0;
+  --sea-bottom: #8fdac6;
+  --sea-ink: #0b3b36;
 }
 
-.wave-information {
-  padding: 7px;
-  position: absolute;
-  bottom: 20px;
-  background-color: rgba(255, 255, 255, 0.2);
-  border-radius: 20px;
-  border:
-    2px rgba(0, 0, 0, 0.3),
-    solid;
-  font-size: 10pt;
-  color: rgba(0, 0, 0, 0.6);
+body[data-sea="good"] {
+  --sea-top: #d9eef9;
+  --sea-bottom: #5fb3e3;
+  --sea-ink: #0b2e4a;
+}
+
+body[data-sea="rough"] {
+  --sea-top: #ffe6dd;
+  --sea-bottom: #ff8d6e;
+  --sea-ink: #5a1406;
+}
+
+body[data-sea="unknown"] {
+  --sea-top: #eef2f5;
+  --sea-bottom: #c9d6df;
+  --sea-ink: #3c5465;
 }
