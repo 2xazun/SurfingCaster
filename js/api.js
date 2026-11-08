@@ -64,21 +64,45 @@ async function fetchTideData(obsCode) {
   }
 }
 
-// 3. Promise.allSettled 이용 병렬 호출
-async function fetchAllMarineData(beachCode, obsCode) {
-  try {
-    // Promise.all 대신 Promise.allSettled를 사용하면 두 API 중 하나가 실패해도 나머지 성공한 데이터는 정상 활용 가능
-    const [weatherResult, tideResult] = await Promise.allSettled([
-      fetchWeatherData(beachCode),
-      fetchTideData(obsCode),
-    ]);
+// 3. 기상청 해수욕장 수온 조회 (실시간 부이 관측값)
+async function fetchWaterTemp(beachCode) {
+  if (!beachCode) return null;
 
-    return {
-      weather: weatherResult.status === "fulfilled" ? weatherResult.value : null,
-      tide: tideResult.status === "fulfilled" ? tideResult.value : null,
-    };
+  // 관측값은 보통 30분 단위로 올라오므로 1시간 전 시각으로 조회
+  const t = new Date(Date.now() - 60 * 60 * 1000);
+  const searchTime =
+    t.getFullYear().toString() +
+    String(t.getMonth() + 1).padStart(2, "0") +
+    String(t.getDate()).padStart(2, "0") +
+    String(t.getHours()).padStart(2, "0") +
+    "00";
+
+  const url = `https://apis.data.go.kr/1360000/BeachInfoservice/getTwBuoyBeach?serviceKey=${SERVICE_KEY}&dataType=JSON&beach_num=${beachCode}&searchTime=${searchTime}`;
+
+  try {
+    const response = await fetch(url);
+    if (!response.ok) throw new Error(`수온 API 응답 오류 (${response.status})`);
+    return await response.json();
   } catch (error) {
-    console.error("데이터 병렬 불러오기 실패:", error);
-    throw error;
+    console.error("fetchWaterTemp 에러:", error);
+    return null;
   }
+}
+
+// 4. Promise.allSettled 이용 병렬 호출 (날씨 + 수온 + 조석 3개를 동시에 요청)
+async function fetchAllMarineData(beachCode, obsCode) {
+  // Promise.all 대신 Promise.allSettled를 사용하면 API 중 하나가 실패해도 나머지 성공한 데이터는 정상 활용 가능
+  const [weatherResult, waterResult, tideResult] = await Promise.allSettled([
+    fetchWeatherData(beachCode),
+    fetchWaterTemp(beachCode),
+    fetchTideData(obsCode),
+  ]);
+
+  const valueOf = (result) => (result.status === "fulfilled" ? result.value : null);
+
+  return {
+    weather: valueOf(weatherResult),
+    water: valueOf(waterResult),
+    tide: valueOf(tideResult),
+  };
 }

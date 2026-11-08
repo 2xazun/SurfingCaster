@@ -1,7 +1,13 @@
 function updateWave(waveHeight) {
   const wave = document.querySelector(".wave");
-  const svgDoc = wave.contentDocument;
-  const svgElement = svgDoc.querySelector("svg");
+  if (!wave) return;
+
+  // <object>로 불러온 SVG가 아직 로딩 전이면 로딩이 끝난 뒤에 다시 적용
+  const svgElement = wave.contentDocument?.querySelector("svg");
+  if (!svgElement) {
+    wave.addEventListener("load", () => updateWave(waveHeight), { once: true });
+    return;
+  }
 
   if (waveHeight <= 0.5) {
     wave.style.height = "100px";

@@ -1,25 +1,39 @@
 <!doctype html>
-<html lang="en">
+<html lang="ko">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=], initial-scale=1.0" />
-    <title>Document</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>로그인 | SurfingCaster</title>
     <link rel="stylesheet" href="css/signup-login-style.css" />
   </head>
   <body>
-    <div class="box-cotainer">
-      <img class="logo-image" src="assets/icons/logo.svg" alt="" />
+    <form class="box-cotainer" id="login-form" novalidate>
+      <a href="/index.html" class="logo-link"
+        ><img class="logo-image" src="assets/icons/logo.svg" alt="SurfingCaster"
+      /></a>
       <input
         type="text"
+        id="login-id"
         placeholder="ID"
+        autocomplete="username"
         style="margin-bottom: 50px; margin-top: 15px"
       />
-      <input type="text" placeholder="Password" style="margin-bottom: 50px" />
-      <button>Login</button>
+      <input
+        type="password"
+        id="login-password"
+        placeholder="Password"
+        autocomplete="current-password"
+        style="margin-bottom: 20px"
+      />
+      <p class="form-message" id="login-message"></p>
+      <button type="submit">Login</button>
       <div>
         아직 회원이 아니라면?
-        <a href=".\signup.html" style="display: inline-block">SignUp</a>
+        <a href="/signup.html" style="display: inline-block">SignUp</a>
       </div>
-    </div>
+    </form>
+
+    <script src="js/auth.js"></script>
+    <script src="js/login.js"></script>
   </body>
 </html>

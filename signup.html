@@ -1,22 +1,39 @@
 <!doctype html>
-<html lang="en">
+<html lang="ko">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=], initial-scale=1.0" />
-    <title>Document</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>회원가입 | SurfingCaster</title>
     <link rel="stylesheet" href="css/signup-login-style.css" />
   </head>
   <body>
-    <div class="box-cotainer">
-      <img class="logo-image" src="assets/icons/logo.svg" alt="" />
-      <input type="text" placeholder="Name" />
-      <input type="text" placeholder="ID" />
-      <input type="text" placeholder="Password" />
-      <button>SignUp</button>
+    <form class="box-cotainer" id="signup-form" novalidate>
+      <a href="/index.html" class="logo-link"
+        ><img class="logo-image" src="assets/icons/logo.svg" alt="SurfingCaster"
+      /></a>
+      <input type="text" id="signup-name" placeholder="Name" autocomplete="name" />
+      <input
+        type="text"
+        id="signup-id"
+        placeholder="ID (영문/숫자 4~20자)"
+        autocomplete="username"
+      />
+      <input
+        type="password"
+        id="signup-password"
+        placeholder="Password (4자 이상)"
+        autocomplete="new-password"
+        style="margin-bottom: 20px"
+      />
+      <p class="form-message" id="signup-message"></p>
+      <button type="submit">SignUp</button>
       <div>
         이미 계정이 있으신가요?
-        <a href=".\login.html" style="display: inline-block">Login</a>
+        <a href="/login.html" style="display: inline-block">Login</a>
       </div>
-    </div>
+    </form>
+
+    <script src="js/auth.js"></script>
+    <script src="js/signup.js"></script>
   </body>
 </html>
