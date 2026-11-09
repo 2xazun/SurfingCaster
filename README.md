@@ -48,7 +48,8 @@ GitHub 저장소를 Clone하거나 ZIP 파일로 다운로드합니다.
     KAKAO_MAP_KEY: "Kakao Map API 키",
     PUBLIC_API_KEY:
       "공공데이터 API 인증키",
-  };```
+  };
+  ```
   내용을 넣습니다.
 
 ### 4) 백엔드 서버 실행
