@@ -32,9 +32,24 @@ GitHub 저장소를 Clone하거나 ZIP 파일로 다운로드합니다.
 
 ### 3) API 및 DB 접속 정보 설정
 
-- Kakao Map API 키를 설정합니다.
-- 공공데이터 API 인증키를 설정합니다.
-- DB 접속 정보를 설정합니다.
+- 최상위 위치에 .env파일을 만들어
+  ```
+  DB_HOST=
+  DB_PORT=
+  DB_USER=
+  DB_PASSWORD=
+  DB_NAME=surfingcaster
+  PORT=
+  KHOA_SERVICE_KEY=공공데이터포털키
+  ```
+  내용을 넣습니다.
+- js폴더 안에 config.js파일을 만들어 
+  ```const CONFIG = {
+    KAKAO_MAP_KEY: "Kakao Map API 키",
+    PUBLIC_API_KEY:
+      "공공데이터 API 인증키",
+  };```
+  내용을 넣습니다.
 
 ### 4) 백엔드 서버 실행
 
@@ -52,5 +67,5 @@ GitHub 저장소를 Clone하거나 ZIP 파일로 다운로드합니다.
 
 ## 4. 테스트 계정
 
-- 아이디: test@gmail.com
+- 아이디: test
 - 비밀번호: test1234
