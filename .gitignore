@@ -15,3 +15,6 @@ node_modules/
 
 # 로그
 *.log
+
+# 서버 캐시
+server/cache/
