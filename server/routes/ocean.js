@@ -8,6 +8,34 @@
 const express = require('express');
 const router = express.Router();
 const axios = require('axios');
+const https = require('https');
+const fs = require('fs');
+const path = require('path');
+const os = require('os');
+
+// IPv4 로 고정 (일부 네트워크에서 IPv6 연결 시도가 멈춰서 타임아웃 나는 문제 방지)
+const httpsAgent = new https.Agent({ family: 4, keepAlive: true });
+const TIMEOUT_MS = 10000;
+
+// 한 번 받은 예보는 저장 -> API 서버가 느리거나 장애일 때 저장된 값으로 응답
+// (조석 예보는 하루 동안 바뀌지 않으므로 날짜별로 저장해도 정확함)
+// ※ 프로젝트 폴더 밖(OS 임시 폴더)에 저장: 폴더 안에 저장하면 Live Server 가 파일 변경을 감지해서
+//    페이지를 계속 새로고침하는 문제가 생김
+const CACHE_FILE = path.join(os.tmpdir(), 'surfingcaster-tide-cache.json');
+let tideCache = {};
+try {
+  tideCache = JSON.parse(fs.readFileSync(CACHE_FILE, 'utf8'));
+} catch {
+  tideCache = {};
+}
+
+function saveCache() {
+  try {
+    fs.writeFileSync(CACHE_FILE, JSON.stringify(tideCache));
+  } catch (error) {
+    console.warn('조석 캐시 저장 실패:', error.message);
+  }
+}
 
 const TIDE_URL = 'https://apis.data.go.kr/1192136/tideFcstHghLw/GetTideFcstHghLwApiService';
 const TIDE_TYPE = { 1: '고조', 2: '저조', 3: '고조', 4: '저조' }; // 극치구분(1: 오전 고조, 2: 오전 저조, 3: 오후 고조, 4: 오후 저조)
@@ -18,8 +46,8 @@ function kstDateString(offsetDays = 0) {
   return kst.toISOString().slice(0, 10).replace(/-/g, '');
 }
 
-async function fetchTideDay(obsCode, reqDate) {
-  const response = await axios.get(TIDE_URL, {
+async function requestTide(obsCode, reqDate) {
+  return axios.get(TIDE_URL, {
     params: {
       serviceKey: process.env.KHOA_SERVICE_KEY || process.env.PUBLIC_API_KEY,
       type: 'json',
@@ -27,8 +55,40 @@ async function fetchTideDay(obsCode, reqDate) {
       reqDate,
       numOfRows: 10,
     },
-    timeout: 5000,
+    timeout: TIMEOUT_MS,
+    httpsAgent,
+    headers: { 'User-Agent': 'SurfingCaster/1.0' },
   });
+}
+
+// 하루치 예보 조회: 실패하면 한 번 더 시도 -> 그래도 실패하면 저장된 값 사용
+async function fetchTideDay(obsCode, reqDate) {
+  const key = `${obsCode}_${reqDate}`;
+  try {
+    const items = await fetchTideDayFromApi(obsCode, reqDate);
+    // 내용이 바뀐 경우에만 파일에 씀
+    if (JSON.stringify(tideCache[key]) !== JSON.stringify(items)) {
+      tideCache[key] = items;
+      saveCache();
+    }
+    return items;
+  } catch (error) {
+    if (tideCache[key]) {
+      console.warn(`[조석예보 API 실패 -> 저장된 값 사용 - ${key}]: ${error.message}`);
+      return tideCache[key];
+    }
+    throw error;
+  }
+}
+
+async function fetchTideDayFromApi(obsCode, reqDate) {
+  let response;
+  try {
+    response = await requestTide(obsCode, reqDate);
+  } catch (firstError) {
+    console.warn(`[조석예보 재시도 - ${obsCode}]: ${firstError.message}`);
+    response = await requestTide(obsCode, reqDate);
+  }
 
   const { header, body } = response.data || {};
   if (!header || header.resultCode !== '00') {

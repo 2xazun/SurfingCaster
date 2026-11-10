@@ -1,5 +1,13 @@
 const SERVICE_KEY = CONFIG.PUBLIC_API_KEY;
 
+// 응답이 너무 늦으면(공공데이터포털 장애 등) 기다리지 않고 실패 처리 -> 화면이 멈춰 보이지 않게
+const API_TIMEOUT_MS = 6000;
+function fetchWithTimeout(url) {
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), API_TIMEOUT_MS);
+  return fetch(url, { signal: controller.signal }).finally(() => clearTimeout(timer));
+}
+
 // 1. 기상청 해수욕장 날씨 (파고, 풍향, 풍속)
 async function fetchWeatherData(beachCode) {
   // 예외 처리: beachCode가 전달되지 않은 경우
@@ -39,7 +47,7 @@ async function fetchWeatherData(beachCode) {
   const url = `https://apis.data.go.kr/1360000/BeachInfoservice/getVilageFcstBeach?serviceKey=${SERVICE_KEY}&dataType=JSON&beach_num=${beachCode}&base_time=${timeFormat}&base_date=${dateFormat}`;
 
   try {
-    const response = await fetch(url);
+    const response = await fetchWithTimeout(url);
     if (!response.ok) throw new Error(`기상청 API 응답 오류 (${response.status})`);
     return await response.json();
   } catch (error) {
@@ -53,7 +61,7 @@ async function fetchTideData(obsCode) {
   if (!obsCode) return null;
 
   try {
-    const response = await fetch(`http://localhost:3000/api/ocean/tide/${obsCode}`);
+    const response = await fetchWithTimeout(`http://localhost:3000/api/ocean/tide/${obsCode}`);
     if (!response.ok) {
       throw new Error(`서버 응답 에러 (${response.status})`);
     }
@@ -80,7 +88,7 @@ async function fetchWaterTemp(beachCode) {
   const url = `https://apis.data.go.kr/1360000/BeachInfoservice/getTwBuoyBeach?serviceKey=${SERVICE_KEY}&dataType=JSON&beach_num=${beachCode}&searchTime=${searchTime}`;
 
   try {
-    const response = await fetch(url);
+    const response = await fetchWithTimeout(url);
     if (!response.ok) throw new Error(`수온 API 응답 오류 (${response.status})`);
     return await response.json();
   } catch (error) {
@@ -104,7 +112,7 @@ async function fetchWaveHeight(beachCode) {
   const url = `https://apis.data.go.kr/1360000/BeachInfoservice/getWhBuoyBeach?serviceKey=${SERVICE_KEY}&dataType=JSON&beach_num=${beachCode}&searchTime=${searchTime}`;
 
   try {
-    const response = await fetch(url);
+    const response = await fetchWithTimeout(url);
     if (!response.ok) throw new Error(`파고 API 응답 오류 (${response.status})`);
     return await response.json();
   } catch (error) {
